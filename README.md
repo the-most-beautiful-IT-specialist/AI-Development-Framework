@@ -51,18 +51,40 @@ The central element of quality control in this framework is the **Manual Fix Rat
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start & Execution Modes
 
-To see the framework in action, run the demonstration script (converting a User Story into technical tasks):
+This repository supports two execution modes to demonstrate the framework's capabilities. 
 
+### 1. Live AI Mode (Real Integration)
+Use `real_story_to_tasks.py` for live AI integration. This script demonstrates how the framework wraps raw requirements into a strict instruction shell (`STRICT_SCHEMA_PROMPT`) before sending them to the LLM.
+
+**Requirements:**
+* Set your API key in the environment: `export OPENAI_API_KEY='your_key_here'`
+* Run the script:
 ```bash
-python examples/story_to_tasks.py
+python examples/real_story_to_tasks.py
+```
+
+### 2. Demo Mode (Mock Presentation)
+Use `mock_story_to_tasks.py` for offline demonstration. This script simulates the pipeline logic using pre-defined data to ensure 100% stability during presentations.
+
+**Run the demonstration:**
+```bash
+python examples/mock_story_to_tasks.py
 ```
 
 ### Input-Output Logic Example:
 * **Input (User):** "As a user, I want to reset my password via email."
-* **Process:** Executing `get_strict_json()` through our framework wrapper.
-* **Output:** A structured JSON array of technical tasks for Jira/Trello.
+* **Process:** Executing `get_strict_json()` through our framework wrapper with system instructions.
+* **Output:** A structured JSON array of technical tasks for Jira/Trello:
+```json
+{
+  "tasks": [
+    { "id": "TASK-101", "title": "Generate Secure Reset Token Logic", "hours": 3 },
+    { "id": "TASK-102", "title": "SMTP Mailer Service Integration", "hours": 2 }
+  ]
+}
+```
 
 ---
 
