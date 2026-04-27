@@ -37,6 +37,8 @@ The framework guarantees that the AI returns data exactly in the requested forma
   ]
 }
 
+---
+
 ## 📈 Quality Metrics (AI Specific Metrics)
 
 The central element of quality control in this framework is the **Manual Fix Rate (MFR)**.
@@ -46,6 +48,8 @@ The central element of quality control in this framework is the **Manual Fix Rat
 * **Green Zone (<15%):** Prompt and model are working effectively.
 * **Yellow Zone (15-30%):** Prompt refactoring is required (add context).
 * **Red Zone (>30%):** Using AI is inefficient. Architecture redesign is required.
+
+---
 
 ## 🚀 Quick Start
 
@@ -60,6 +64,7 @@ python examples/story_to_tasks.py
 * **Process:** Executing `get_strict_json()` through our framework wrapper.
 * **Output:** A structured JSON array of technical tasks for Jira/Trello.
 
+---
 
 ## 📝 Why is this a "Framework" and not a "Document"?
 
