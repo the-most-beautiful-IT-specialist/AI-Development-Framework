@@ -1,0 +1,87 @@
+import sys
+import os
+import json
+
+# Ensure the source directory is in the python path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.llm_client import AIClientFramework
+
+# Strict system instructions to enforce logic and formatting
+STRICT_SCHEMA_PROMPT = """
+You are a Senior Technical Architect. 
+Analyze the User Story provided and decompose it into granular technical tasks.
+
+STRICT JSON CONTRACT:
+1. Return ONLY valid JSON output.
+2. Format: {"tasks": [{"id": "TASK-XXX", "title": "string", "hours": number}]}
+3. Ensure estimations are realistic for an experienced developer.
+4. Output language must be English.
+"""
+
+def run_ai_pipeline():
+    """
+    Main execution pipeline for requirement decomposition.
+    Integrates User Requirements with System Prompts for structured LLM output.
+    """
+    # Raw requirement input
+    user_story = "As a user, I want to reset my password via email."
+    
+    # Initialize the framework client
+    client = AIClientFramework()
+
+    print(f"\n[INPUT]: {user_story}")
+    print("[SYSTEM]: Processing via AI Framework...")
+
+    try:
+        # Execute the AI call by wrapping the user story with the strict schema
+        result = client.get_strict_json(
+            user_text=user_story, 
+            schema_prompt=STRICT_SCHEMA_PROMPT
+        )
+        
+        tasks = result.get("tasks", [])
+
+        # Console output for verification
+        print("\n[SUCCESS]: Generated Technical Tasks:")
+        for task in tasks:
+            print(f"      - {task.get('title')} ({task.get('hours')}h)")
+
+        # Generate the persistent analysis report
+        save_technical_report(tasks)
+        print("\n[INFO]: Technical report saved to 'report.html'")
+
+    except Exception as e:
+        print(f"\n[CRITICAL ERROR]: Pipeline execution failed: {str(e)}")
+        print("[HINT]: Check your API key and network connectivity.")
+
+def save_technical_report(tasks):
+    """
+    Renders the task decomposition results into a visual HTML dashboard.
+    """
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{ font-family: 'Inter', sans-serif; padding: 40px; color: #2c3e50; }}
+            .container {{ max-width: 800px; margin: auto; }}
+            h1 {{ color: #1a73e8; border-bottom: 2px solid #eef2f7; padding-bottom: 10px; }}
+            .task-item {{ background: #fff; border: 1px solid #eef2f7; border-left: 5px solid #1a73e8; 
+                          padding: 15px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }}
+            .meta {{ font-size: 0.9em; color: #7f8c8d; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>AI Architecture Analysis</h1>
+            {"".join([f"<div class='task-item'><b>{t['title']}</b><br><span class='meta'>Estimated: {t['hours']}h</span></div>" for t in tasks])}
+        </div>
+    </body>
+    </html>
+    """
+    with open("report.html", "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+if __name__ == "__main__":
+    run_ai_pipeline()
