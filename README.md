@@ -36,7 +36,7 @@ The framework guarantees that the AI returns data exactly in the requested forma
     { "title": "Database Schema", "hours": 3 }
   ]
 }
-
+```
 ---
 
 ## 📈 Quality Metrics (AI Specific Metrics)
